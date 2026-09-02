@@ -9,79 +9,107 @@ public class Main {
 
         System.out.println("Sistema de Gerenciamento de Estoque de Roupas");
 
-        boolean continuar = true;
+        int opcao= 0;
 
-        while (continuar) {
-            System.out.println("\n Cadastrar Nova Roupa: ");
-            System.out.print("Marca: ");
-            String marca = scanner.nextLine();
+        while (opcao !=5) {
+            System.out.println("\n Menu de opções: ");
+            System.out.println("1 - Adicionar Roupa");
+            System.out.println("2 - Listar Roupas");
+            System.out.println("3 - Atualizar Roupa");
+            System.out.println("4 - Remover Roupa");
+            System.out.println("5 - Sair");
+            System.out.print("Opção: ");
 
-            System.out.print("Tipo (ex: camisa, calça, regata): ");
-            String tipo = scanner.nextLine();
-
-            System.out.print("Tamanho (P, M, G): ");
-            String tamanho = scanner.nextLine();
-
-            System.out.print("Quantidade: ");
-            int quantidade = Integer.parseInt(scanner.nextLine());
-
-            System.out.print("Valor: ");
-            double valor = Double.parseDouble(scanner.nextLine());
-
-            Roupa roupa = new Roupa(marca, tipo, tamanho, quantidade, valor);
-            listaRoupas.add(roupa);
-
-            roupa.mostrar();
-
-            boolean gerenciarAtual = true;
-            while (gerenciarAtual) {
-                System.out.println("\nDeseja realizar alguma operação nesta roupa?");
-                System.out.println("1 - Adicionar peças ao estoque");
-                System.out.println("2 - Remover peças do estoque");
-                System.out.println("3 - Prosseguir");
-                System.out.print("Opção: ");
-
-                int opcao = Integer.parseInt(scanner.nextLine());
-
-                switch (opcao) {
-                    case 1:
-                        System.out.print("Quantidade a adicionar: ");
-                        int qtdAdd = Integer.parseInt(scanner.nextLine());
-                        roupa.adicionar(qtdAdd);
-                        roupa.mostrar();
-                        break;
-                    case 2:
-                        System.out.print("Quantidade a remover: ");
-                        int qtdRem = Integer.parseInt(scanner.nextLine());
-                        roupa.remover(qtdRem);
-                        roupa.mostrar();
-                        break;
-                    case 3:
-                        gerenciarAtual = false;
-                        break;
-                    default:
-                        System.out.println("Opção inválida.");
-                }
+            try{
+                opcao = Integer.parseInt(scanner.nextLine().trim());
+            } catch(Exception e){
+                System.out.println("Entrada inválida, Digite apenas números entre 1 a 5.");
+                opcao = 0;
+                continue;
             }
 
-            System.out.print("\nDeseja cadastrar outra roupa? (S/N): ");
-            String resp = scanner.nextLine().trim();
+            switch (opcao) {
+                case 1:
 
-            if (resp.equalsIgnoreCase("N")) {
-                continuar = false;
+                System.out.println("\nCADASTRAR ROUPA:");
+                System.out.println("Nome: ");
+                String nome = scanner.nextLine();
+                System.out.println("Quantidade: ");
+                int quantidade = Integer.parseInt(scanner.nextLine());
+                System.out.println("Valor: ");
+                double valor = Double.parseDouble(scanner.nextLine());
+
+                Roupa roupa = new Roupa(nome,quantidade,valor);
+                listaRoupas.add(roupa);
+                break;
+
+                case 2:
+                    System.out.println("\nLISTAR ROUPAS:");
+                    if (listaRoupas.isEmpty()) {
+                        System.out.println("Nenhuma Roupa encontrada");
+                    } else {
+                        double valorTotal = 0;
+                        for (Roupa r : listaRoupas) {
+                            r.mostrar();
+                            valorTotal += r.valorTotal();
+                        }
+
+                        System.out.println("Valor total do estoque: " + valorTotal);
+                    }
+                    break;
+                case 3:
+                    System.out.println("\nATUALIZAR ROUPA:");
+                    if (listaRoupas.isEmpty()){
+                    System.out.println("Nenhum Roupa encontrada para atualizar");}
+                    else{
+                        System.out.println("Informe o índice do produto a ser atualizado (0 a "  +( listaRoupas.size() - 1) + "): ");
+                        int indice = Integer.parseInt(scanner.nextLine());
+
+                        if(indice >=0 && indice < listaRoupas.size()){
+                            Roupa r = listaRoupas.get(indice);
+                            System.out.println("Novo nome (Atual: " + r.getNome() + "): ");
+                            String novoNome = scanner.nextLine();
+
+                            System.out.println("Novo preço (Atual: " + r.getValor() + "): ");
+                            Double novoValor = Double.parseDouble(scanner.nextLine());
+
+                            System.out.println("Nova quantidade (Atual: " + r.getQuantidade() + "): ");
+                            int novaQuantidade = Integer.parseInt(scanner.nextLine());
+
+                            r.setNome(novoNome);
+                            r.setValor(novoValor);
+                            r.setQuantidade(novaQuantidade);
+
+                            System.out.println("Roupa atualizada com sucesso!");
+                        }else{
+                            System.out.println("ìndice inválido");
+                        }
+                    }break;
+                    case 4:
+                        System.out.println("\n REMOVER ROUPA:");
+                        if (listaRoupas.isEmpty()){
+                            System.out.println("Nenhum Roupa encontrada");
+                        }else{
+                            System.out.println("Informe o índice do produto a ser removido (0 a "  +( listaRoupas.size() - 1) + "): ");
+                            int indiceRem = Integer.parseInt(scanner.nextLine());
+
+                            if (indiceRem >= 0 && indiceRem < listaRoupas.size()){
+                                Roupa removida = listaRoupas.get(indiceRem);
+                                System.out.println("Removido com sucesso!");
+                            }else{
+                                System.out.println("ìndice inválido");
+                            }
+                        }break;
+                        case 5:
+                            System.out.println("Saindo do sistema...");
+                            break;
+
+                        default:
+                            System.out.println("Opção inválida, Escolha uma opção entre 1 e 5.");
+                            break;
             }
-        }
 
-        // Relatório final sem o cálculo
-        System.out.println("Estoque disponível: ");
-
-        double valorTotalFinal = 0;
-        for (Roupa r : listaRoupas) {
-            r.mostrar();
-            valorTotalFinal += r.valorTotal();
-        }
-        System.out.println("Valor total do estoque: " + valorTotalFinal);
-
+            }
         scanner.close();
     }
 }

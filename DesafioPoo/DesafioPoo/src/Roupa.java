@@ -1,15 +1,11 @@
 public class Roupa {
-    private String marca;
-    private String tipo;
-    private String tamanho;
+    private String nome;
     private int quantidade;
     private double valor;
 
 
-    public Roupa(String marca, String tipo,String tamanho,  int quantidade, double valor) {
-        this.marca = marca;
-        this.tipo = tipo;
-        this.tamanho = tamanho;
+    public Roupa(String nome,int quantidade, double valor) {
+        this.nome = nome;
         this.quantidade = quantidade;
         this.valor = valor;
     }
@@ -38,10 +34,31 @@ public class Roupa {
     }
 
     public void mostrar(){
-        System.out.println("Marca: " + this.marca);
-        System.out.println("Tipo: " + this.tipo);
-        System.out.println("Tamanho: " + this.tamanho);
+        System.out.println("Nome: " + this.nome);
         System.out.println("Quantidade: " + this.quantidade);
         System.out.println("Valor: " + this.valor);
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public Double getValor() {
+        return valor;
+    }
+
+    public int getQuantidade() {
+        return quantidade;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public void setValor(Double valor) {
+        this.valor = valor;
+    }
+    public void setQuantidade(int quantidade) {
+        this.quantidade = quantidade;
     }
 }
